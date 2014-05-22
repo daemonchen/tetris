@@ -121,7 +121,7 @@ func (gz gameZone) dotsOnLines() [][]bool {
 }
 
 func (gz gameZone) dotsOnZone() [][]bool {
-	return gz.activePiece.placeOnZone(gz.dotsOnZone())
+	return gz.activePiece.placeOnZone(gz.dotsOnLines())
 }
 
 // clear the lines filled with dots
