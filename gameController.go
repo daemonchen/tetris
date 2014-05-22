@@ -136,18 +136,25 @@ func (gc *gameController) updateGameZone() {
 	"d" 		-> move active piece down,
 	"R"		-> rotate
 */
+const (
+	KeyLeft   = "l"
+	KeyRight  = "r"
+	KeyDown   = "d"
+	KeyRotate = "R"
+)
+
 func (gc *gameController) processingInputs() {
 	var processFunc = func(input string) {
 		gc.Lock()
 		defer gc.Unlock()
 		switch input {
-		case "l":
+		case KeyLeft:
 			gc.zone.movePieceLeft()
-		case "r":
+		case KeyRight:
 			gc.zone.movePieceRight()
-		case "d":
+		case KeyDown:
 			gc.zone.movePieceDown()
-		case "R":
+		case KeyRotate:
 			gc.zone.rotate()
 		}
 	}
