@@ -14,6 +14,7 @@ go get github.com/gogames/tetris
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -23,7 +24,7 @@ import (
 
 var (
 	game          *tetris.Tetris
-	height, width = 30, 20
+	height, width = 20, 10
 )
 
 func init() {
@@ -39,7 +40,17 @@ func fetchGameScreen() {
 	for {
 		screen = game.GameScreen()
 		// do something
-		log.Println("screen: ", screen)
+		for _, l := range screen.([][]bool) {
+			lstr := ""
+			for _, c := range l {
+				if c {
+					lstr += "#"
+				} else {
+					lstr += " "
+				}
+			}
+			fmt.Println(lstr)
+		}
 	}
 }
 
@@ -70,9 +81,10 @@ func handleGameOver() {
 }
 
 func inputs() {
-	game.Input(game.KeyLeft)
-	game.Input(game.KeyRight)
-	game.Input(game.KeyDown)
+	game.Input(tetris.KeyLeft)
+	game.Input(tetris.KeyRight)
+	game.Input(tetris.KeyDown)
+	game.Input(tetris.KeyRotate)
 }
 
 func main() {
