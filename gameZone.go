@@ -46,9 +46,14 @@ func (gz *gameZone) generateNextPiece() *gameZone {
 }
 
 // is game over
-// simply check if the first line contains any dot
+// simply check if all lines contains at least a dot
 func (gz *gameZone) isGameOver() bool {
-	return gz.lines.Front().Value.(*line).containsAnyDot()
+	for l := gz.lines.Back(); l != nil; l = l.Prev() {
+		if !l.Value.(*line).containsAnyDot() {
+			return false
+		}
+	}
+	return true
 }
 
 // is the activePiece able to rotate?
