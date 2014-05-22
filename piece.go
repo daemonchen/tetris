@@ -16,9 +16,28 @@ func newPiece(x, y int) *piece {
 	return p
 }
 
+// String
+func (p *piece) String() string {
+	return p.getDots().String()
+}
+
+// check if the piece is going to be outbounded on the x axis
+func (p *piece) isOutBoundedX(data [][]bool) bool {
+	return p.getDots().isOutBoundedX(data)
+}
+
+// check if the piece is going to be outbounded on the y axis
+func (p *piece) isOutBoundedY(data [][]bool) bool {
+	return p.getDots().isOutBoundedY(data)
+}
+
 // can move down?
 // simply check if there is any dot under the piece
+// be cautious of index out of range
 func (p *piece) canMoveDown(data [][]bool) bool {
+	if p.isOutBoundedY(data) {
+		return false
+	}
 	for _, d := range p.getDots() {
 		if data[d.yCoor+1][d.xCoor] {
 			return false
@@ -29,11 +48,10 @@ func (p *piece) canMoveDown(data [][]bool) bool {
 
 // can move left?
 func (p *piece) canMoveLeft(data [][]bool) bool {
+	if p.isOutBoundedX(data) {
+		return false
+	}
 	for _, d := range p.getDots() {
-		// cautious index out of range
-		if d.xCoor == 0 {
-			return false
-		}
 		if data[d.yCoor][d.xCoor-1] {
 			return false
 		}
@@ -43,11 +61,10 @@ func (p *piece) canMoveLeft(data [][]bool) bool {
 
 // can move right?
 func (p *piece) canMoveRight(data [][]bool) bool {
+	if p.isOutBoundedX(data) {
+		return false
+	}
 	for _, d := range p.getDots() {
-		// cautious index out of range
-		if d.xCoor >= len(data[0])-1 {
-			return false
-		}
 		if data[d.yCoor][d.xCoor+1] {
 			return false
 		}
@@ -59,7 +76,7 @@ func (p *piece) canMoveRight(data [][]bool) bool {
 // simply check overlapping
 func (p *piece) canRotate(data [][]bool) bool {
 	ds := p.dots.rotate().abs(p.x, p.y)
-	if ds.hasNegativeDot() {
+	if ds.hasNegativeDot() || ds.isOutBoundedX(data) || ds.isOutBoundedY(data) {
 		return false
 	}
 	for _, d := range ds {

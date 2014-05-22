@@ -52,8 +52,8 @@ func (ds dots) String() (str string) {
 
 // calculate the absolute location of the dots
 func (ds dots) abs(x, y int) dots {
-	for _, d := range ds {
-		d.add(x, y)
+	for i, _ := range ds {
+		ds[i] = ds[i].add(x, y)
 	}
 	return ds
 }
@@ -91,6 +91,28 @@ func (ds *dots) rotate(isRef ...bool) *dots {
 	return ds1
 }
 
+// if the dots goes outbound?
+func (ds dots) isOutBoundedY(data [][]bool) bool {
+	lHeight := len(data)
+	for _, v := range ds {
+		if v.yCoor >= lHeight-1 {
+			return true
+		}
+	}
+	return false
+}
+
+// if the dots goes outbound in x-axis
+func (ds dots) isOutBoundedX(data [][]bool) bool {
+	lWidth := len(data[0])
+	for _, v := range ds {
+		if v.xCoor >= lWidth-1 || v.xCoor <= 0 {
+			return true
+		}
+	}
+	return false
+}
+
 // some dots have negative y-coor?
 func (ds *dots) hasNegativeDot() bool {
 	for _, d := range ds {
@@ -99,4 +121,14 @@ func (ds *dots) hasNegativeDot() bool {
 		}
 	}
 	return false
+}
+
+// is dots equal to another one
+func (ds dots) isEqualTo(ds1 dots) bool {
+	for i, v := range ds {
+		if !v.isContiguous(*(ds1[i])) {
+			return false
+		}
+	}
+	return true
 }

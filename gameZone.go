@@ -165,6 +165,7 @@ func (gz *gameZone) convPieceIntoLines() *gameZone {
 			if err := l.Value.(*line).placeDots(d.xCoor); err != nil {
 				warning("can not place dots on the line: %v", err)
 			}
+			break
 		}
 	}
 	return gz

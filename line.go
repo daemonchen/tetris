@@ -14,8 +14,11 @@ func newLine(length int) *line {
 }
 
 // ease game zone dots fetching
+// should be every careful of this... bug fix takes quite a long time
 func (l line) getLine() []bool {
-	return []bool(l)
+	nl := make(line, len(l))
+	copy(nl, l)
+	return []bool(nl)
 }
 
 // ease game over checking
